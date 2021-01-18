@@ -1,6 +1,7 @@
 # RW API microservice utility for Python+Flask applications
 
 [![Build Status](https://travis-ci.com/resource-watch/rw-api-microservice-python.svg?branch=main)](https://travis-ci.com/resource-watch/rw-api-microservice-python)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fe857a0082ab7d0bbd64/test_coverage)](https://codeclimate.com/github/resource-watch/rw-api-microservice-python/test_coverage)
 
 Library to register and integrate microservices in the [RW API](https://api.resourcewatch.org/).
 

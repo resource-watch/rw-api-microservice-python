@@ -9,7 +9,7 @@ install:
     - pip install pytest-cov
 env:
   global:
-    - CC_TEST_REPORTER_ID=
+    - CC_TEST_REPORTER_ID=5099bf6b75276e8ae551224696bb4e8cfc6f624bfa5ed90b3a4d96c74aa6a6c9
     - CT_URL=http://127.0.0.1:9000
     - CT_TOKEN=abcdef
 
