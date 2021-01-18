@@ -1,0 +1,9 @@
+/RWAPIMicroservicePython.egg-info
+/dist
+/venv
+*.pyc
+test.py
+.coverage
+build
+.tox
+.pytest_cache
