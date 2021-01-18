@@ -6,6 +6,7 @@ python:
   - "3.9"
 install:
     - pip install tox-travis
+    - pip install pytest-cov
 env:
   global:
     - CC_TEST_REPORTER_ID=
@@ -18,6 +19,6 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - tox
-  - pytest --cov=RWAPIMicroservicePython --cov-report=xml
 after_script:
+  - pytest --cov=RWAPIMicroservicePython --cov-report=xml
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
