@@ -1,8 +1,9 @@
+import json
 import os
 
 import pytest
 import requests_mock
-import json
+from flask import Flask
 
 import RWAPIMicroservicePython
 
@@ -16,10 +17,41 @@ def validate_env():
 
 
 @requests_mock.mock(kw='mocker')
-def test_microservice_register(mocker):
+def test_microservice_register_no_register(mocker):
     post_calls = mocker.post(os.getenv('CT_URL') + '/api/v1/microservice', status_code=204)
 
-    RWAPIMicroservicePython.ct_register('test app', os.getenv('CT_URL'), 'http://local-url.com', True)
+    app = Flask(__name__)
+
+    RWAPIMicroservicePython.register(
+        app=app,
+        name='test app',
+        info={},
+        swagger={},
+        mode=RWAPIMicroservicePython.NORMAL_MODE,
+        ct_url=os.getenv('CT_URL'),
+        url='http://local-url.com',
+        delay=None
+    )
+
+    assert post_calls.call_count == 0
+
+
+@requests_mock.mock(kw='mocker')
+def test_microservice_register_no_register(mocker):
+    post_calls = mocker.post(os.getenv('CT_URL') + '/api/v1/microservice', status_code=204)
+
+    app = Flask(__name__)
+
+    RWAPIMicroservicePython.register(
+        app=app,
+        name='test app',
+        info={},
+        swagger={},
+        mode=RWAPIMicroservicePython.AUTOREGISTER_MODE,
+        ct_url=os.getenv('CT_URL'),
+        url='http://local-url.com',
+        delay=None
+    )
 
     assert post_calls.call_count == 1
     assert post_calls.called

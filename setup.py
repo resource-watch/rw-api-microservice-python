@@ -13,6 +13,7 @@ setup(name='RWAPIMicroservicePython',
       ],
       extras_require={
         'dev': [
+            'Flask==1.1.1',
             'pytest==5.2.2',
             'pytest-cov==2.8.1',
             'pytest-mock==1.11.1',

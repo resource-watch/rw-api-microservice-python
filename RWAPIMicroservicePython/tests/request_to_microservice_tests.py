@@ -63,3 +63,6 @@ def test_request_to_microservice_http_404(mocker):
         })
 
         assert e.message == ''
+
+    assert get_calls.call_count == 1
+    assert get_calls.called
