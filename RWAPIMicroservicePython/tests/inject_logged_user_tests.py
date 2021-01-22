@@ -1,24 +1,14 @@
 import json
-import os
 
-import pytest
 import requests_mock
 from flask import Flask, Blueprint, request
 
 import RWAPIMicroservicePython
 
 
-@pytest.fixture
-def validate_env():
-    if not os.getenv('CT_URL'):
-        raise Exception('CT_URL needs to be set')
-    if not os.getenv('CT_TOKEN'):
-        raise Exception('CT_TOKEN needs to be set')
-
-
 @requests_mock.mock(kw='mocker')
 def test_inject_logged_user(mocker):
-    get_user_data_calls = mocker.get(os.getenv('CT_URL') + '/auth/user/me', status_code=200, json={
+    get_user_data_calls = mocker.get('http://ct-url.com/auth/user/me', status_code=200, json={
         'id': '1a10d7c6e0a37126611fd7a7',
         'name': 'test admin',
         'role': 'ADMIN',
@@ -67,9 +57,11 @@ def test_inject_logged_user(mocker):
         info={},
         swagger={},
         mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url=os.getenv('CT_URL'),
+        ct_url='http://ct-url.com',
         url='http://local-url.com',
-        delay=None
+        delay=None,
+        api_version='v1',
+        token='microserviceToken'
     )
 
     response = app.test_client().get('/test', headers={'Authorization': 'Bearer abcd'})
@@ -93,7 +85,7 @@ def test_inject_logged_user(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_inject_logged_user_when_authorization_header_is_present(mocker):
-    get_user_data_calls = mocker.get(os.getenv('CT_URL') + '/auth/user/me', status_code=200, json={
+    get_user_data_calls = mocker.get('http://ct-url.com/auth/user/me', status_code=200, json={
         'id': '1a10d7c6e0a37126611fd7a7',
         'name': 'test admin',
         'role': 'ADMIN',
@@ -130,9 +122,11 @@ def test_inject_logged_user_when_authorization_header_is_present(mocker):
         info={},
         swagger={},
         mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url=os.getenv('CT_URL'),
+        ct_url='http://ct-url.com',
         url='http://local-url.com',
-        delay=None
+        delay=None,
+        api_version='v1',
+        token='microserviceToken'
     )
 
     response = app.test_client().get('/test')

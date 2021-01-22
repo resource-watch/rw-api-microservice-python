@@ -1,17 +1,6 @@
-import os
-
-import pytest
 from flask import Flask, Blueprint
 
 import RWAPIMicroservicePython
-
-
-@pytest.fixture
-def validate_env():
-    if not os.getenv('CT_URL'):
-        raise Exception('CT_URL needs to be set')
-    if not os.getenv('CT_TOKEN'):
-        raise Exception('CT_TOKEN needs to be set')
 
 
 def test_cache_headers_set_to_private():
@@ -31,9 +20,11 @@ def test_cache_headers_set_to_private():
         info={},
         swagger={},
         mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url=os.getenv('CT_URL'),
+        ct_url='http://ct-url.com',
         url='http://local-url.com',
-        delay=None
+        delay=None,
+        api_version='v1',
+        token='microserviceToken'
     )
 
     response = app.test_client().get('/test')

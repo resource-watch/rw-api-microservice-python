@@ -12,14 +12,14 @@ from RWAPIMicroservicePython.errors import NotFound
 AUTOREGISTER_MODE = 'AUTOREGISTER_MODE'
 NORMAL_MODE = 'NORMAL_MODE'
 
-CT_URL = os.getenv('CT_URL')
-CT_TOKEN = os.getenv('CT_TOKEN')
-API_VERSION = os.getenv('API_VERSION')
+CT_URL = None
+CT_TOKEN = None
+API_VERSION = None
 
 
-def ct_register(name, ct_url, url, active):
+def __ct_register(name, ct_url, url):
     """Autoregister method"""
-    payload = {'name': name, 'url': url, 'active': active}
+    payload = {'name': name, 'url': url, 'active': True}
 
     try:
         r = post(ct_url + '/api/v1/microservice', json=payload, timeout=10)
@@ -30,14 +30,19 @@ def ct_register(name, ct_url, url, active):
         os._exit(1)
 
 
-def register(app, name, info, swagger, mode, ct_url=False, url=False, active=True, delay=5.0):
+def register(app, name, info, swagger, mode, ct_url, url, token, api_version, delay=5.0):
     """Register method"""
     if mode == AUTOREGISTER_MODE:
         if delay is not None:
-            t = threading.Timer(delay, ct_register, [name, ct_url, url, active])
+            t = threading.Timer(delay, __ct_register, [name, ct_url, url])
             t.start()
         else:
-            ct_register(name, ct_url, url, active)
+            __ct_register(name, ct_url, url)
+
+    global CT_TOKEN, CT_URL, API_VERSION
+    CT_TOKEN = token
+    CT_URL = ct_url
+    API_VERSION = api_version
 
     @app.before_request
     def get_logger_user():
