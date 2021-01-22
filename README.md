@@ -24,12 +24,34 @@ pip install RWAPIMicroservicePython
 
 ## Use in microservice
 
+```python
+import os
+import json
+import RWAPIMicroservicePython
+from flask import Flask
 
+app = Flask(__name__)
+
+with open('register.json') as register_file:
+    info = json.load(register_file)
+with open('swagger.json') as swagger_file:
+    swagger = json.load(swagger_file)
+        
+RWAPIMicroservicePython.register(
+    app=app,
+    name='your-microservice-name-here',
+    info=info,
+    swagger=swagger,
+    mode=RWAPIMicroservicePython.AUTOREGISTER_MODE,
+    ct_url='https://control-tower.your.domain',
+    url='http://address.of.your.microservice',
+    token='microserviceTokenForControlTower',
+    api_version='v1'
+)
+```
 
 
 ## Configuration
-
-, mode, ct_url=False, url=False, active=True, delay=5.0
 
 These are the values you'll need to provide when using this library:
 
