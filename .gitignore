@@ -8,3 +8,5 @@ build
 .tox
 .pytest_cache
 coverage.xml
+dist
+build
