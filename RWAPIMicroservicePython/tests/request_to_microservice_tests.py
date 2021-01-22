@@ -54,6 +54,10 @@ def test_request_to_microservice_ct_404(mocker):
         ]
     })
 
+    RWAPIMicroservicePython.API_VERSION = 'v1'
+    RWAPIMicroservicePython.CT_TOKEN = 'microserviceToken'
+    RWAPIMicroservicePython.CT_URL = 'http://ct-url.com'
+
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'GET',
         'uri': '/microservice/endpoint'
@@ -68,6 +72,10 @@ def test_request_to_microservice_ct_404(mocker):
 @requests_mock.mock(kw='mocker')
 def test_request_to_microservice_http_404(mocker):
     get_calls = mocker.get('http://ct-url.com/v1/microservice/endpoint', status_code=404)
+
+    RWAPIMicroservicePython.API_VERSION = 'v1'
+    RWAPIMicroservicePython.CT_TOKEN = 'microserviceToken'
+    RWAPIMicroservicePython.CT_URL = 'http://ct-url.com'
 
     with pytest.raises(NotFound) as e:
         assert RWAPIMicroservicePython.request_to_microservice({
