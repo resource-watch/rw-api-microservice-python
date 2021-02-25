@@ -22,6 +22,12 @@ Additionally, it requires the following Python libraries:
 pip install RWAPIMicroservicePython
 ```
 
+## Testing
+
+```shell
+tox
+```
+
 ## Use in microservice
 
 ```python

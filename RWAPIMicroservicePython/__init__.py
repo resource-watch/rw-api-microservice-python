@@ -3,7 +3,7 @@ import os
 import threading
 
 import requests
-from flask import jsonify, request
+from flask import jsonify, request, Response
 from requests import post, Session, Request
 from werkzeug.datastructures import ImmutableMultiDict
 
@@ -57,6 +57,9 @@ def register(app, name, info, swagger, mode, ct_url, url, token, api_version, de
                 'Authorization': authorization_token_header
             }
         )
+
+        if logged_user_response.status_code >= 400:
+            return Response(logged_user_response.text, status=logged_user_response.status_code, mimetype='application/json')
 
         http_args = request.args.to_dict()
         http_args['loggedUser'] = logged_user_response.text

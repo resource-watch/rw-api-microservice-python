@@ -1,10 +1,11 @@
 from setuptools import setup
 
 setup(name='RWAPIMicroservicePython',
-      version='0.1.0',
+      version='0.2.0',
       description='Python integration library for the RW API microservices',
       author='Vizzuality',
       author_email='info@vizzuality.com',
+      url='https://vizzuality.com',
       license='MIT',
       packages=['RWAPIMicroservicePython'],
       install_requires=[
