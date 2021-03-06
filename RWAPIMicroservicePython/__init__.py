@@ -93,8 +93,9 @@ def request_to_microservice(config):
                 'Authorization': 'Bearer ' + CT_TOKEN,
                 'APP_KEY': config.get('application', 'rw')
             },
-            data=json.dumps(config.get('body'))
         )
+        if 'body' in config:
+            request_config.data = json.dumps(config.get('body'))
         prepped = session.prepare_request(request_config)
 
         response = session.send(prepped)

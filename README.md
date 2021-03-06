@@ -28,7 +28,11 @@ pip install RWAPIMicroservicePython
 tox
 ```
 
+These tests run on multiple python versions in parallel. You may want/need to use something like `pyenv` to support the underlying version handling. If you are using `pyenv virtualenv` be sure to deactivate any envs before calling `tox`.
+
 ## Use in microservice
+
+To bootstrap your microservice, use:
 
 ```python
 import os
@@ -56,6 +60,24 @@ RWAPIMicroservicePython.register(
 )
 ```
 
+To make a request to another microservice, use:
+
+```python
+from RWAPIMicroservicePython import request_to_microservice
+
+def execute():
+    config = {
+        'uri': '/dataset/1234',
+        'method': 'POST',
+        'body': {'key': 'value'}
+    }
+    response = request_to_microservice(config)
+    if not response or response.get('errors'):
+        raise DatasetNotFoundError(message='Dataset not found')
+
+    dataset = response.get('data', None).get('attributes', None)
+    return dataset
+```
 
 ## Configuration
 
