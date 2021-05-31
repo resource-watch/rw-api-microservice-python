@@ -31,6 +31,14 @@ def __ct_register(name, ct_url, url):
 
 
 def register(app, name, info, swagger, mode, ct_url, url, token, api_version, delay=5.0):
+    @app.after_request
+    def set_cors_headers(response):
+        response.headers["access-control-allow-origin"] = "*"
+        response.headers["access-control-allow-headers"] = "upgrade-insecure-requests"
+        response.headers["access-control-allow-credentials"] = "true"
+        response.headers["access-control-allow-methods"] = "OPTIONS,GET,PUT,POST,PATCH,DELETE"
+        return response
+
     """Register method"""
     if mode == AUTOREGISTER_MODE:
         if delay is not None:
@@ -59,7 +67,8 @@ def register(app, name, info, swagger, mode, ct_url, url, token, api_version, de
         )
 
         if logged_user_response.status_code >= 400:
-            return Response(logged_user_response.text, status=logged_user_response.status_code, mimetype='application/json')
+            return Response(logged_user_response.text, status=logged_user_response.status_code,
+                            mimetype='application/json')
 
         http_args = request.args.to_dict()
         http_args['loggedUser'] = logged_user_response.text

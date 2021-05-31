@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='RWAPIMicroservicePython',
-      version='0.3.0',
+      version='0.4.0',
       description='Python integration library for the RW API microservices',
       author='Vizzuality',
       author_email='info@vizzuality.com',

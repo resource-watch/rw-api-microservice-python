@@ -184,23 +184,23 @@ def test_inject_logged_user_when_token_is_invalid(mocker):
 
     response = app.test_client().get('/test', headers={'Authorization': 'Bearer abcd'})
     assert response.status_code == 401
-    assert response.data == b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    assert response.json == json.loads(b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}')
 
     response = app.test_client().put('/test', headers={'Authorization': 'Bearer abcd'})
     assert response.status_code == 401
-    assert response.data == b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    assert response.json == json.loads(b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}')
 
     response = app.test_client().post('/test', headers={'Authorization': 'Bearer abcd'})
     assert response.status_code == 401
-    assert response.data == b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    assert response.json == json.loads(b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}')
 
     response = app.test_client().patch('/test', headers={'Authorization': 'Bearer abcd'})
     assert response.status_code == 401
-    assert response.data == b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    assert response.json == json.loads(b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}')
 
     response = app.test_client().delete('/test', headers={'Authorization': 'Bearer abcd'})
     assert response.status_code == 401
-    assert response.data == b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}'
+    assert response.json == json.loads(b'{"errors": [{"status": 401, "detail": "Your token is outdated. Please use /auth/login to login and /auth/generate-token to generate a new token."}]}')
 
     assert get_user_data_calls.called
     assert get_user_data_calls.call_count == 5

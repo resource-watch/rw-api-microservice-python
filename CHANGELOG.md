@@ -1,3 +1,7 @@
+# 0.4.0
+
+- Add CORS headers
+
 # 0.3.0
 
 - Pin dependency versions to python 2.7 compatible versions
