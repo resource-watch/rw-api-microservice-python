@@ -1,3 +1,9 @@
+# 1.0.0
+
+- Remove Control Tower support
+- `request_to_microservice` no longer prefixes request uris with `/v1`
+- Remove `/info` and `/ping` endpoints
+
 # 0.4.0
 
 - Add CORS headers

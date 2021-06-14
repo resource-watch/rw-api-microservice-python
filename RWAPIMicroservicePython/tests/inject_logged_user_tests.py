@@ -56,14 +56,7 @@ def test_inject_logged_user(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        name='test app',
-        info={},
-        swagger={},
-        mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url='http://ct-url.com',
-        url='http://local-url.com',
-        delay=None,
-        api_version='v1',
+        gateway_url='http://ct-url.com',
         token='microserviceToken'
     )
 
@@ -110,14 +103,7 @@ def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        name='test app',
-        info={},
-        swagger={},
-        mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url='http://ct-url.com',
-        url='http://local-url.com',
-        delay=None,
-        api_version='v1',
+        gateway_url='http://ct-url.com',
         token='microserviceToken'
     )
 
@@ -171,14 +157,7 @@ def test_inject_logged_user_when_token_is_invalid(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        name='test app',
-        info={},
-        swagger={},
-        mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url='http://ct-url.com',
-        url='http://local-url.com',
-        delay=None,
-        api_version='v1',
+        gateway_url='http://ct-url.com',
         token='microserviceToken'
     )
 

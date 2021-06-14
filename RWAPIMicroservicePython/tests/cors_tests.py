@@ -22,14 +22,7 @@ def test_cors_headers_are_present(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        name='test app',
-        info={},
-        swagger={},
-        mode=RWAPIMicroservicePython.NORMAL_MODE,
-        ct_url='http://ct-url.com',
-        url='http://local-url.com',
-        delay=None,
-        api_version='v1',
+        gateway_url='http://ct-url.com',
         token='microserviceToken'
     )
 
