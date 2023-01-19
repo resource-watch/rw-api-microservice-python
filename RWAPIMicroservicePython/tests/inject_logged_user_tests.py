@@ -8,7 +8,7 @@ import RWAPIMicroservicePython
 
 @requests_mock.mock(kw='mocker')
 def test_inject_logged_user(mocker):
-    get_user_data_calls = mocker.get('http://ct-url.com/auth/user/me',
+    get_user_data_calls = mocker.get('http://gateway-url.com/auth/user/me',
                                      request_headers={'Authorization': 'Bearer abcd'},
                                      status_code=200,
                                      json={
@@ -56,7 +56,7 @@ def test_inject_logged_user(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        gateway_url='http://ct-url.com',
+        gateway_url='http://gateway-url.com',
         token='microserviceToken'
     )
 
@@ -87,7 +87,7 @@ def test_inject_logged_user(mocker):
 @requests_mock.mock(kw='mocker')
 def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
     # This is never actually called, were just using it as a way to validate that no calls are made to this endpoint
-    get_user_data_calls = mocker.get('http://ct-url.com/auth/user/me', status_code=200, json={})
+    get_user_data_calls = mocker.get('http://gateway-url.com/auth/user/me', status_code=200, json={})
 
     test_endpoints = Blueprint('rw_api', __name__)
 
@@ -103,7 +103,7 @@ def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        gateway_url='http://ct-url.com',
+        gateway_url='http://gateway-url.com',
         token='microserviceToken'
     )
 
@@ -133,7 +133,7 @@ def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_inject_logged_user_when_token_is_invalid(mocker):
-    get_user_data_calls = mocker.get('http://ct-url.com/auth/user/me',
+    get_user_data_calls = mocker.get('http://gateway-url.com/auth/user/me',
                                      request_headers={'Authorization': 'Bearer abcd'},
                                      status_code=401,
                                      json={
@@ -157,7 +157,7 @@ def test_inject_logged_user_when_token_is_invalid(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        gateway_url='http://ct-url.com',
+        gateway_url='http://gateway-url.com',
         token='microserviceToken'
     )
 

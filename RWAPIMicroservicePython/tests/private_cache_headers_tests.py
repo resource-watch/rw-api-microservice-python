@@ -16,7 +16,7 @@ def test_cache_headers_set_to_private():
 
     RWAPIMicroservicePython.register(
         app=app,
-        gateway_url='http://ct-url.com',
+        gateway_url='http://gateway-url.com',
         token='microserviceToken'
     )
 

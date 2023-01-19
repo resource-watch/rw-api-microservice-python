@@ -1,3 +1,9 @@
+# 2.0.0
+
+- Bump minimum supported Python version to 3.7
+- Add Python 3.10 and 3.11 support
+- Update dependencies
+
 # 1.0.0
 
 - Remove Control Tower support

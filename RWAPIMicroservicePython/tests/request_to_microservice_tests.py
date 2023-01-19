@@ -18,11 +18,11 @@ def request_has_body(expected_body):
 
 @requests_mock.mock(kw='mocker')
 def test_get_request_to_microservice_happy_case(mocker):
-    get_calls = mocker.get('http://ct-url.com/v1/microservice/endpoint', additional_matcher=request_has_no_body,
+    get_calls = mocker.get('http://gateway-url.com/v1/microservice/endpoint', additional_matcher=request_has_no_body,
                            json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'GET',
@@ -37,11 +37,11 @@ def test_get_request_to_microservice_happy_case(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_delete_request_to_microservice_happy_case(mocker):
-    get_calls = mocker.delete('http://ct-url.com/v1/microservice/endpoint', additional_matcher=request_has_no_body,
+    get_calls = mocker.delete('http://gateway-url.com/v1/microservice/endpoint', additional_matcher=request_has_no_body,
                               json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'DELETE',
@@ -56,10 +56,10 @@ def test_delete_request_to_microservice_happy_case(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_patch_request_to_microservice_happy_case(mocker):
-    get_calls = mocker.patch('http://ct-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
+    get_calls = mocker.patch('http://gateway-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'PATCH',
@@ -75,10 +75,10 @@ def test_patch_request_to_microservice_happy_case(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_put_request_to_microservice_happy_case(mocker):
-    get_calls = mocker.put('http://ct-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
+    get_calls = mocker.put('http://gateway-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'PUT',
@@ -94,10 +94,10 @@ def test_put_request_to_microservice_happy_case(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_post_request_to_microservice_happy_case(mocker):
-    get_calls = mocker.post('http://ct-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
+    get_calls = mocker.post('http://gateway-url.com/v1/microservice/endpoint', additional_matcher=request_has_body({'key': 'value'}), json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'POST',
@@ -113,10 +113,10 @@ def test_post_request_to_microservice_happy_case(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_request_to_microservice_no_api_version(mocker):
-    get_calls = mocker.get('http://ct-url.com/microservice/endpoint', json={})
+    get_calls = mocker.get('http://gateway-url.com/microservice/endpoint', json={})
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'GET',
@@ -131,7 +131,7 @@ def test_request_to_microservice_no_api_version(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_request_to_microservice_ct_404(mocker):
-    get_calls = mocker.get('http://ct-url.com/v1/microservice/endpoint', status_code=404, json={
+    get_calls = mocker.get('http://gateway-url.com/v1/microservice/endpoint', status_code=404, json={
         "errors": [
             {
                 "status": 404,
@@ -141,7 +141,7 @@ def test_request_to_microservice_ct_404(mocker):
     })
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     response = RWAPIMicroservicePython.request_to_microservice({
         'method': 'GET',
@@ -156,10 +156,10 @@ def test_request_to_microservice_ct_404(mocker):
 
 @requests_mock.mock(kw='mocker')
 def test_request_to_microservice_http_404(mocker):
-    get_calls = mocker.get('http://ct-url.com/v1/microservice/endpoint', status_code=404)
+    get_calls = mocker.get('http://gateway-url.com/v1/microservice/endpoint', status_code=404)
 
     RWAPIMicroservicePython.MICROSERVICE_TOKEN = 'microserviceToken'
-    RWAPIMicroservicePython.GATEWAY_URL = 'http://ct-url.com'
+    RWAPIMicroservicePython.GATEWAY_URL = 'http://gateway-url.com'
 
     with pytest.raises(NotFound) as e:
         assert RWAPIMicroservicePython.request_to_microservice({
