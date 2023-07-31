@@ -11,18 +11,15 @@ setup(name='RWAPIMicroservicePython',
       install_requires=[
         'Flask<=2.2.2',
         'requests<2.29',
-        "itsdangerous < 2.3;python_version > '3.7'",
-        "MarkupSafe < 2.2;python_version > '3.7'",
-        "click < 8.1;python_version > '3.7'"
       ],
       extras_require={
         'dev': [
             'Flask==2.2.2',
-            'pytest==7.2.1',
-            'pytest-cov==4.0.0',
-            'pytest-mock==3.10.0',
-            'codecov==2.1.12',
-            'requests_mock==1.10.0',
+            'pytest==7.4.0',
+            'pytest-cov==4.1.0',
+            'pytest-mock==3.11.1',
+            'codecov==2.1.13',
+            'requests_mock==1.11.0',
         ]
       },
       zip_safe=False)

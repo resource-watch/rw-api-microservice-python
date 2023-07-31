@@ -17,25 +17,26 @@ def test_cache_headers_set_to_private():
     RWAPIMicroservicePython.register(
         app=app,
         gateway_url='http://gateway-url.com',
-        token='microserviceToken'
+        token='microserviceToken',
+        require_api_key=True
     )
 
-    response = app.test_client().get('/test')
+    response = app.test_client().get('/test', headers={'x-api-key': 'api-key-test'})
     assert 'cache-control' in response.headers
     assert response.headers.get('cache-control') == 'private'
 
-    response = app.test_client().put('/test')
+    response = app.test_client().put('/test', headers={'x-api-key': 'api-key-test'})
     assert 'cache-control' in response.headers
     assert response.headers.get('cache-control') == 'private'
 
-    response = app.test_client().post('/test')
+    response = app.test_client().post('/test', headers={'x-api-key': 'api-key-test'})
     assert 'cache-control' in response.headers
     assert response.headers.get('cache-control') == 'private'
 
-    response = app.test_client().patch('/test')
+    response = app.test_client().patch('/test', headers={'x-api-key': 'api-key-test'})
     assert 'cache-control' in response.headers
     assert response.headers.get('cache-control') == 'private'
 
-    response = app.test_client().delete('/test')
+    response = app.test_client().delete('/test', headers={'x-api-key': 'api-key-test'})
     assert 'cache-control' in response.headers
     assert response.headers.get('cache-control') == 'private'

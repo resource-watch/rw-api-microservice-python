@@ -9,8 +9,8 @@ Library to register and integrate microservices in the [RW API](https://api.reso
 ## Requirements
 
 This library is tested to work with following Python versions:
-- 3.6+
-- 2.7 (legacy)
+- 3.11.4
+- 3.10.12
 
 Additionally, it requires the following Python libraries: 
 - Flask (tested with v1.1.1)

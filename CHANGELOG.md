@@ -1,3 +1,9 @@
+# 3.0.0-alpha.1
+
+- Bump minimum supported Python version to 3.10
+- Update dependencies
+- Replace user data loading endpoint with request validation endpoint
+
 # 2.0.0
 
 - Bump minimum supported Python version to 3.7
