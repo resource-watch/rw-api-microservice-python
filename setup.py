@@ -14,11 +14,13 @@ setup(name='RWAPIMicroservicePython',
       ],
       extras_require={
         'dev': [
+            'boto3==1.28.16',
+            'codecov==2.1.13',
             'Flask==2.2.2',
+            'moto[logs]==4.1.4',
             'pytest==7.4.0',
             'pytest-cov==4.1.0',
             'pytest-mock==3.11.1',
-            'codecov==2.1.13',
             'requests_mock==1.11.0',
         ]
       },

@@ -1,13 +1,14 @@
 import json
-from RWAPIMicroservicePython.tests.mocks import mock_request_validation, mock_request_validation_invalid_token
-from RWAPIMicroservicePython.tests.constants import USER
+from RWAPIMicroservicePython.tests import mock_request_validation, mock_request_validation_invalid_token, USER, APPLICATION
 import requests_mock
 from flask import Flask, Blueprint, request
-
 import RWAPIMicroservicePython
+import boto3
+from moto import mock_logs
 
 
 @requests_mock.mock(kw='mocker')
+@mock_logs()
 def test_inject_logged_user(mocker):
     get_user_data_calls = mock_request_validation(mocker)
 
@@ -31,7 +32,9 @@ def test_inject_logged_user(mocker):
         app=app,
         gateway_url='http://gateway-url.com',
         token='microserviceToken',
-        require_api_key=True
+        require_api_key=True,
+        aws_region='us-east-1',
+        aws_cloud_watch_log_stream_name='rw-api-microservice-python'
     )
 
     response = app.test_client().get('/test', headers={'Authorization': 'Bearer abcd', 'x-api-key': 'api-key-test'})
@@ -57,11 +60,29 @@ def test_inject_logged_user(mocker):
     assert get_user_data_calls.called
     assert get_user_data_calls.call_count == 5
 
+    aws_mock = boto3.client('logs', region_name='us-east-1')
+    log_lines = aws_mock.get_log_events(
+        logGroupName="api-keys-usage",
+        logStreamName="rw-api-microservice-python"
+    )['events']
+    assert len(log_lines) == 5
+    assert log_lines[0][
+               'message'] == '{"request": {"method": "GET", "path": "/test", "query": {}}, "loggedUser": {"id": "1a10d7c6e0a37126611fd7a5", "name": "test user", "role": "USER", "provider": "local"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[1][
+               'message'] == '{"request": {"method": "PUT", "path": "/test", "query": {}}, "loggedUser": {"id": "1a10d7c6e0a37126611fd7a5", "name": "test user", "role": "USER", "provider": "local"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[2][
+               'message'] == '{"request": {"method": "POST", "path": "/test", "query": {}}, "loggedUser": {"id": "1a10d7c6e0a37126611fd7a5", "name": "test user", "role": "USER", "provider": "local"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[3][
+               'message'] == '{"request": {"method": "PATCH", "path": "/test", "query": {}}, "loggedUser": {"id": "1a10d7c6e0a37126611fd7a5", "name": "test user", "role": "USER", "provider": "local"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[4][
+               'message'] == '{"request": {"method": "DELETE", "path": "/test", "query": {}}, "loggedUser": {"id": "1a10d7c6e0a37126611fd7a5", "name": "test user", "role": "USER", "provider": "local"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+
 
 @requests_mock.mock(kw='mocker')
+@mock_logs()
 def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
     # This is never actually called, were just using it as a way to validate that no calls are made to this endpoint
-    get_user_data_calls = mock_request_validation(mocker, user=None, application=None)
+    get_user_data_calls = mock_request_validation(mocker, user=None)
 
     test_endpoints = Blueprint('rw_api', __name__)
 
@@ -79,7 +100,9 @@ def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
         app=app,
         gateway_url='http://gateway-url.com',
         token='microserviceToken',
-        require_api_key=True
+        require_api_key=True,
+        aws_region='us-east-1',
+        aws_cloud_watch_log_stream_name='rw-api-microservice-python'
     )
 
     response = app.test_client().get('/test', headers={'x-api-key': 'api-key-test'})
@@ -105,8 +128,26 @@ def test_inject_logged_user_when_no_authorization_header_is_present(mocker):
     assert get_user_data_calls.called
     assert get_user_data_calls.call_count == 5
 
+    aws_mock = boto3.client('logs', region_name='us-east-1')
+    log_lines = aws_mock.get_log_events(
+        logGroupName="api-keys-usage",
+        logStreamName="rw-api-microservice-python"
+    )['events']
+    assert len(log_lines) == 5
+    assert log_lines[0][
+               'message'] == '{"request": {"method": "GET", "path": "/test", "query": {}}, "loggedUser": {"id": "anonymous", "name": "anonymous", "role": "anonymous", "provider": "anonymous"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[1][
+               'message'] == '{"request": {"method": "PUT", "path": "/test", "query": {}}, "loggedUser": {"id": "anonymous", "name": "anonymous", "role": "anonymous", "provider": "anonymous"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[2][
+               'message'] == '{"request": {"method": "POST", "path": "/test", "query": {}}, "loggedUser": {"id": "anonymous", "name": "anonymous", "role": "anonymous", "provider": "anonymous"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[3][
+               'message'] == '{"request": {"method": "PATCH", "path": "/test", "query": {}}, "loggedUser": {"id": "anonymous", "name": "anonymous", "role": "anonymous", "provider": "anonymous"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+    assert log_lines[4][
+               'message'] == '{"request": {"method": "DELETE", "path": "/test", "query": {}}, "loggedUser": {"id": "anonymous", "name": "anonymous", "role": "anonymous", "provider": "anonymous"}, "requestApplication": {"id": "649c4b204967792f3a4e52c9", "name": "grouchy-armpit", "organization": null, "user": null, "apiKeyValue": "api-key-test"}}'
+
 
 @requests_mock.mock(kw='mocker')
+@mock_logs()
 def test_inject_logged_user_when_token_is_invalid(mocker):
     get_user_data_calls = mock_request_validation_invalid_token(mocker)
 
@@ -124,7 +165,9 @@ def test_inject_logged_user_when_token_is_invalid(mocker):
         app=app,
         gateway_url='http://gateway-url.com',
         token='microserviceToken',
-        require_api_key=True
+        require_api_key=True,
+        aws_region='us-east-1',
+        aws_cloud_watch_log_stream_name='rw-api-microservice-python'
     )
 
     response = app.test_client().get('/test', headers={'Authorization': 'Bearer abcd', 'x-api-key': 'api-key-test'})
@@ -154,3 +197,10 @@ def test_inject_logged_user_when_token_is_invalid(mocker):
 
     assert get_user_data_calls.called
     assert get_user_data_calls.call_count == 5
+
+    aws_mock = boto3.client('logs', region_name='us-east-1')
+    log_lines = aws_mock.get_log_events(
+        logGroupName="api-keys-usage",
+        logStreamName="rw-api-microservice-python"
+    )['events']
+    assert len(log_lines) == 0

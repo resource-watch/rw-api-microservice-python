@@ -25,7 +25,7 @@ APPLICATION = {
             "name": "grouchy-armpit",
             "organization": None,
             "user": None,
-            "apiKeyValue": "a1a9e4c3-bdff-4b6b-b5ff-7a60a0454e13",
+            "apiKeyValue": "api-key-test",
             "createdAt": "2023-06-28T15:00:48.149Z",
             "updatedAt": "2023-06-28T15:00:48.149Z"
         }

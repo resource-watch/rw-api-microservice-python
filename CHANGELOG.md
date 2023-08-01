@@ -1,3 +1,9 @@
+# 3.0.0-beta.1
+
+- Refactor `request_to_microservice` argument signature
+- Add `x-api-key` header to `request_to_microservice`
+- Add AWS Cloudwatch logging integration
+
 # 3.0.0-alpha.1
 
 - Bump minimum supported Python version to 3.10
