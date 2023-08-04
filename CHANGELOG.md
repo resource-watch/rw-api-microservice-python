@@ -1,3 +1,7 @@
+# 3.0.0-rc.2
+
+- Improve typing definition
+
 # 3.0.0-rc.1
 
 - Add `/healthcheck` endpoint

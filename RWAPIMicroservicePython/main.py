@@ -18,14 +18,13 @@ def register(
         token: str,
         aws_region: str,
         aws_cloud_watch_log_stream_name: str,
-        require_api_key=True,
-        aws_cloud_watch_logging_enabled=True,
+        require_api_key: bool = True,
+        aws_cloud_watch_logging_enabled: bool = True,
         aws_cloud_watch_log_group_name: str = 'api-keys-usage',
 ):
     global MICROSERVICE_TOKEN, GATEWAY_URL
     MICROSERVICE_TOKEN = token
     GATEWAY_URL = gateway_url
-
     cloud_watch_service = CloudWatchService(aws_region, aws_cloud_watch_log_group_name, aws_cloud_watch_log_stream_name)
 
     healthcheck_endpoint = Blueprint('rw_api_healthcheck', __name__)
