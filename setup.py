@@ -1,22 +1,24 @@
 from setuptools import setup
 
 setup(name='RWAPIMicroservicePython',
-      version='2.0.0',
+      version='3.0.0-rc.1',
+      long_description='Python integration library for the RW API microservices',
       description='Python integration library for the RW API microservices',
+      long_description_content_type='text',
       author='Vizzuality',
       author_email='info@vizzuality.com',
       url='https://vizzuality.com',
       license='MIT',
       packages=['RWAPIMicroservicePython'],
       install_requires=[
-        'Flask<=2.2.2',
-        'requests<2.29',
+        'boto3==1.28.16',
+        'Flask<=2.3.2',
+        'requests<=2.31',
       ],
       extras_require={
         'dev': [
-            'boto3==1.28.16',
             'codecov==2.1.13',
-            'Flask==2.2.2',
+            'Flask==2.3.2',
             'moto[logs]==4.1.4',
             'pytest==7.4.0',
             'pytest-cov==4.1.0',

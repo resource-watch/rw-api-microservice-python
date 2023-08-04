@@ -1,6 +1,6 @@
 import json
 import requests_mock
-from RWAPIMicroservicePython.tests.mocks import mock_request_validation
+from RWAPIMicroservicePython.tests import mock_request_validation
 from flask import Flask, Blueprint, request
 import boto3
 from moto import mock_logs
@@ -25,7 +25,7 @@ def test_cors_headers_are_present(mocker):
 
     RWAPIMicroservicePython.register(
         app=app,
-        gateway_url='http://gateway-url.com',
+        gateway_url='https://gateway-url.com',
         token='microserviceToken',
         aws_region='us-east-1',
         aws_cloud_watch_log_stream_name='rw-api-microservice-python'
@@ -71,6 +71,8 @@ def test_cors_headers_are_present(mocker):
     assert response.headers['access-control-allow-credentials'] == 'true'
     assert response.headers['access-control-allow-methods'] == 'OPTIONS,GET,PUT,POST,PATCH,DELETE'
 
+    assert get_user_data_calls.called
+    assert get_user_data_calls.call_count == 5
     aws_mock = boto3.client('logs', region_name='us-east-1')
     log_lines = aws_mock.get_log_events(
         logGroupName="api-keys-usage",

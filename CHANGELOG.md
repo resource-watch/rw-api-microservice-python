@@ -1,3 +1,29 @@
+# 3.0.0-rc.1
+
+- Add `/healthcheck` endpoint
+- Improve documentation
+
+# 3.0.0-beta.6
+
+- Support `request_to_microservice` calls without api key for microservices
+
+# 3.0.0-beta.5
+
+- Improve `test_utils` utility methods for testing
+
+# 3.0.0-beta.4
+
+- Add `test_utils` utility methods for testing
+
+# 3.0.0-beta.3
+
+- Add missing boto3 dependency
+- Export test mock method
+
+# 3.0.0-beta.2
+
+- Update required dependencies
+
 # 3.0.0-beta.1
 
 - Refactor `request_to_microservice` argument signature

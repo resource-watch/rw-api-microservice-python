@@ -1,7 +1,7 @@
 import json
 import requests
 import logging
-from flask import request, jsonify, Response
+from flask import request, jsonify, Response, Blueprint
 from requests import Session, Request
 from werkzeug.datastructures import ImmutableMultiDict
 
@@ -28,6 +28,14 @@ def register(
 
     cloud_watch_service = CloudWatchService(aws_region, aws_cloud_watch_log_group_name, aws_cloud_watch_log_stream_name)
 
+    healthcheck_endpoint = Blueprint('rw_api_healthcheck', __name__)
+
+    @healthcheck_endpoint.route('/healthcheck', methods=['GET'])
+    def test_route():
+        return 'ok', 200
+
+    app.register_blueprint(healthcheck_endpoint)
+
     @app.after_request
     def set_cors_headers(response):
         response.headers["access-control-allow-origin"] = "*"
@@ -38,6 +46,8 @@ def register(
 
     @app.before_request
     def before_request():
+        if should_skip_api_key_validation():
+            return
         try:
             request_validation_data = get_logger_user()
         except ApiKeyError:
@@ -51,6 +61,9 @@ def register(
             log_request_to_cloud_watch(request_validation_data)
 
         inject_request_validation_data(request_validation_data)
+
+    def should_skip_api_key_validation():
+        return request.path == '/healthcheck'
 
     def log_request_to_cloud_watch(request_validation_data):
         logging.debug('[log_request_to_cloud_watch] Logging request to CloudWatch')
@@ -117,9 +130,6 @@ def register(
         request.args = ImmutableMultiDict(http_args)
 
     def get_logger_user():
-        if 'x-api-key' not in request.headers and require_api_key:
-            raise ApiKeyError('Required API key not found')
-
         body = {}
 
         if 'authorization' in request.headers:
@@ -141,11 +151,13 @@ def register(
             if logged_user_response.status_code >= 400:
                 raise ValidationError(message=logged_user_response.text, code=logged_user_response.status_code)
 
-            # http_args = request.args.to_dict()
-            # http_args['loggedUser'] = logged_user_response.text
-            # request.args = ImmutableMultiDict(http_args)
+            json_response = logged_user_response.json()
 
-            return logged_user_response.json()
+            if 'application' not in json_response and (json_response.get('user', {}).get('data', {}).get('id',
+                                                                                                         False) != 'microservice') and require_api_key:
+                raise ApiKeyError('Required API key not found')
+
+            return json_response
         else:
             return {}
 
