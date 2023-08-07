@@ -1,3 +1,11 @@
+# 3.0.0-rc.4
+
+- Fix validation request body format
+
+# 3.0.0-rc.3
+
+- Fix behavior of `aws_cloud_watch_logging_enabled`
+
 # 3.0.0-rc.2
 
 - Improve typing definition

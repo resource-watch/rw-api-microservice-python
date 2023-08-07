@@ -25,7 +25,8 @@ def register(
     global MICROSERVICE_TOKEN, GATEWAY_URL
     MICROSERVICE_TOKEN = token
     GATEWAY_URL = gateway_url
-    cloud_watch_service = CloudWatchService(aws_region, aws_cloud_watch_log_group_name, aws_cloud_watch_log_stream_name)
+    if aws_cloud_watch_logging_enabled:
+        cloud_watch_service = CloudWatchService(aws_region, aws_cloud_watch_log_group_name, aws_cloud_watch_log_stream_name)
 
     healthcheck_endpoint = Blueprint('rw_api_healthcheck', __name__)
 
@@ -144,7 +145,7 @@ def register(
                     'content-type': 'application/json',
                     'authorization': f"Bearer {MICROSERVICE_TOKEN}"
                 },
-                data=body
+                json=body
             )
 
             if logged_user_response.status_code >= 400:
