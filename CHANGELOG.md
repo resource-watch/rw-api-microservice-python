@@ -1,3 +1,7 @@
+# 3.0.0
+
+- Stable release tagging
+
 # 3.0.0-rc.4
 
 - Fix validation request body format
